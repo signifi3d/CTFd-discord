@@ -42,8 +42,12 @@ def get_scoreboard(s: Session, tables: CTFdTables, user_type: str = 'all') -> Li
     if user_type != 'all':
         scoreboard = scoreboard.filter(tables.users.type == user_type)
     scoreboard = scoreboard.group_by(tables.users.id).all()
-
-    score_list = [dict(username=username, score=score_user) for (username, score_user) in scoreboard]
+    
+    award_scores = s.query(tables.users.name, func.sum(tables.awards.value).label('award_score')). \
+        join(tables.awards, tables.users.id == tables.awards.user_id).group_by(tables.users.id).all()
+        
+    award_list = {username:award_score for (username, award_score) in award_scores}
+    score_list = [dict(username=username, score=score_user+award_list[username] if username in award_list else score_user) for (username, score_user) in scoreboard]
     return sorted(score_list, key=lambda item: item['score'], reverse=True)
 
 

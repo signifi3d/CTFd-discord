@@ -20,7 +20,7 @@ class CTFdTables:
     def __init__(self, Base):
         check_database(Base)
         #  self.alembic_version = Base.classes.alembic_version
-        #  self.awards = Base.classes.awards
+        self.awards = Base.classes.awards
         self.challenges = Base.classes.challenges
         self.config = Base.classes.config
         self.dynamic_challenge = Base.classes.dynamic_challenge
