@@ -83,6 +83,12 @@ class CTFdBot:
             log.info("Command executed", name=str(context.command), author=str(context.message.author))
             await display.flush(context)
 
+        @self.bot.command(description='Display awards for a specific user.')
+        async def awards(context: commands.context.Context):
+            """ <username> """
+            log.info("Command executed", name=str(context.command), author=str(context.message.author))
+            await display.awards(context)
+
     def start(self):
         if TOKEN == 'token':
             log.warn('Unexpected token', TOKEN=TOKEN)

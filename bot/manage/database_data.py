@@ -51,6 +51,14 @@ def get_scoreboard(s: Session, tables: CTFdTables, user_type: str = 'all') -> Li
     return sorted(score_list, key=lambda item: item['score'], reverse=True)
 
 
+def get_awards_for(s: Session, tables: CTFdTables, usr: str) -> List[Dict]:
+    usr_awards = s.query(tables.awards.name, tables.awards.value). \
+        join(tables.users, table.users.name == usr).all()
+
+    awards = [dict(award=award_name, value=award_value) for (award_name, award_value) in usr_awards]
+    return awards
+    
+
 def get_users(s: Session, tables: CTFdTables, user_type: str = 'all') -> List[str]:
     # users with a null score will not be displayed
     scoreboard = get_scoreboard(s, tables, user_type=user_type)
