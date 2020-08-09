@@ -143,6 +143,18 @@ def display_diff(db: Database, user1: str, user2: str) -> List[Dict[str, str]]:
     return to_send_list
 
 
+async def display_awards(context: commands.context.Context, username: str) -> str:
+    usr_awards = database_data.get_awards_for(db.session, db.tables, username) 
+    to_send = ''
+
+    for award in usr_awards:
+        to_send += award['award'] + ' ' + award['value'] + '\n'
+
+    return to_send
+    
+
+
+
 async def display_flush(context: commands.context.Context) -> str:
     result = await channel_data.flush(context.message.channel)
     if context.message.channel is None or not result:

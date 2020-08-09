@@ -192,6 +192,19 @@ async def diff(context: commands.context.Context) -> None:
     await display_by_blocks_diff(context, to_send_list, 0xFF00FF)
 
 
+async def awards(context: commands.context.Context) -> None:
+    args = get_command_args(context)
+    
+    if len(args) != 1:
+        to_send = f'Use {context.bot.command_prefix}{context.command} {context.command.help.strip()}'
+        await_intterupt(context.channel, to_send, embed_color=0xd81948, embed_name="ERROR")
+        return
+    
+    user = args[0]
+    to_send = show.display_awards(context.bot.db, user)
+    await interrupt(context.channel, to_send, embed_color=0xd81948, embed_name=embed_name)
+
+
 async def flush(context: commands.context.Context) -> None:
     embed_color, embed_name = 0xD81948, 'FLUSH'
     to_send = f'{context.message.author} just launched {context.bot.command_prefix}flush command.'
