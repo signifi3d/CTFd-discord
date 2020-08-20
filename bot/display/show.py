@@ -145,14 +145,12 @@ def display_diff(db: Database, user1: str, user2: str) -> List[Dict[str, str]]:
 
 async def display_awards(context: commands.context.Context, username: str) -> str:
     usr_awards = database_data.get_awards_for(db.session, db.tables, username) 
-    to_send = ''
-
-    for award in usr_awards:
-        to_send += award['award'] + ' ' + award['value'] + '\n'
-
-    return to_send
-    
-
+    #to_send = ''
+    #
+    #for award in usr_awards:
+    #    to_send += award['award'] + ' ' + award['value'] + '\n'
+    #
+    return "Test string"
 
 
 async def display_flush(context: commands.context.Context) -> str:

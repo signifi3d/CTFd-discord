@@ -52,11 +52,10 @@ def get_scoreboard(s: Session, tables: CTFdTables, user_type: str = 'all') -> Li
 
 
 def get_awards_for(s: Session, tables: CTFdTables, usr: str) -> List[Dict]:
-    usr_awards = s.query(tables.awards.name, tables.awards.value). \
-        join(tables.users, table.users.name == usr).all()
-
-    awards = [dict(award=award_name, value=award_value) for (award_name, award_value) in usr_awards]
-    return awards
+    #usr_awards = s.query(tables.awards.name, tables.awards.value).all()
+    #
+    #awards = [dict(award=award_name, value=award_value) for (award_name, award_value) in usr_awards]
+    return [dict(award="test", value="test"),]
     
 
 def get_users(s: Session, tables: CTFdTables, user_type: str = 'all') -> List[str]:
@@ -221,13 +220,20 @@ def select_challenges_by_tags(challenges: List, tag: str) -> List[Any]:
             return selected_challenges[::-1]  # sort from oldest to newest
     return selected_challenges[::-1]  # sort from oldest to newest
 
+def tag_in_challenges(challenges: List, tag: str) -> bool:
+    if tag is not None:
+        for challenge in challenges:
+            if tag == get_tag(challenge):
+                return True
+    return False
+
 
 def get_new_challenges(s: Session, tables: CTFdTables, tag: str, user_type: str = 'all') -> Tuple[str, Dict]:
     new_challenge = dict()
     new_tag = None
     challenges = get_challenges_solved(s, tables, user_type=user_type)
 
-    if tag is None:
+    if tag is None or not tag_in_challenges(challenges, tag):
         if len(challenges) > 0:
             new_tag = get_tag(challenges[0])
         return new_tag, new_challenge

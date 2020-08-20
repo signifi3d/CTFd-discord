@@ -59,8 +59,7 @@ async def ready(bot: commands.bot.Bot) -> None:
     bot.channel = channel  # necessary from cron tasks, context.channel is used in others functions
     log.info('CTFdBot is coming !')
 
-    to_send = f'Hello, it seems that it\'s the first time you are using my services.\nYou might use ' \
-        f'`{bot.command_prefix}help` to know more about my features.'
+    to_send = f'ALLEZ CUISINE!\n'
 
     embed_color, embed_name = 0x000000, "CTFd Bot"
     await interrupt(channel, to_send, embed_color=embed_color, embed_name=embed_name)
@@ -197,11 +196,12 @@ async def awards(context: commands.context.Context) -> None:
     
     if len(args) != 1:
         to_send = f'Use {context.bot.command_prefix}{context.command} {context.command.help.strip()}'
-        await_intterupt(context.channel, to_send, embed_color=0xd81948, embed_name="ERROR")
+        await interrupt(context.channel, to_send, embed_color=0xd81948, embed_name="ERROR")
         return
     
     user = args[0]
-    to_send = show.display_awards(context.bot.db, user)
+    to_send = await show.display_awards(context.bot.db, user)
+    embed_name = f'Awards received by {user}'
     await interrupt(context.channel, to_send, embed_color=0xd81948, embed_name=embed_name)
 
 
